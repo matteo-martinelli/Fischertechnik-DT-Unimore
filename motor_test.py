@@ -32,13 +32,21 @@ class Test(actuator.Actuator):
         if (pin_state != self.state):
             print('here')
             self.set_state(self.state)
-            
+        
     def rpi_cleanup(self):
         """This function does cleanup work before the end of the program."""
         self.rpi.core.a1green.value = False
         self.rpi.io['O_' + str(self.pin)].value = False
 
 if __name__ == '__main__':
+    conveyor_belt = Test('conveyor belt', 3)
+    conveyor_belt.set_state(True)
+    time.sleep(2) 
+    conveyor_belt.set_state(False)
+    del(conveyor_belt)
+
+    time.sleep(0.5)
+
     motor_saw = Test('motor saw', 4)
     motor_saw.set_state(True)
     time.sleep(2) 
