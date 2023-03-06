@@ -17,12 +17,12 @@ class Test(actuator.Actuator):
         print("Go into cycleloop")
         self.rpi.cycleloop(self.cycleprogram, blocking=False)
     
-    def set_state(self, value: bool):
+    def set_state(self, value: bool) -> None:
         self.rpi.io['O_' + str(self.pin)].value = value
+        self.state = value
         print('State set to: ' + str(value))
     
     def get_state(self) -> bool:
-        print('The state is ' + str(self.state))
         return self.state
     
     def cycleprogram(self, cycletools):
@@ -30,17 +30,17 @@ class Test(actuator.Actuator):
         pin_state = self.get_state()
         
         if (pin_state != self.state):
+            print('here')
             self.set_state(self.state)
-            #self.rpi.io['O_' + str(self.pin)].value = self.state
-        
+            
     def rpi_cleanup(self):
         """This function does cleanup work before the end of the program."""
         self.rpi.core.a1green.value = False
         self.rpi.io['O_' + str(self.pin)].value = False
 
 if __name__ == '__main__':
-    motor_saw = Test('my_saw', 3)
+    motor_saw = Test('motor saw', 4)
     motor_saw.set_state(True)
     time.sleep(2) 
     motor_saw.set_state(False)
-    
+    del(motor_saw)
